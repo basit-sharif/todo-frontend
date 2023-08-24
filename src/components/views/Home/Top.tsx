@@ -1,9 +1,10 @@
 import { Box, Button, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Text, useDisclosure } from '@chakra-ui/react';
 import { Menu } from 'lucide-react';
 import { useForm, useWatch } from 'react-hook-form';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
+import Login from './Login';
 
 const Top = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -17,12 +18,15 @@ const Top = () => {
         errorMessage = 'Value must be same';
     } else {
         errorMessage = undefined;
-    }
-    let tokenFromStorage = localStorage.getItem("tokenForBasitTodo") as string;
+    };
+
+    let tokenFromStorage = typeof window !== undefined ?
+        localStorage.getItem("tokenForBasitTodo") as string
+        : undefined;
     let onSubmitHandler = (data: any) => {
         if (!errorMessage) {
             let userToken = uuidv4();
-            localStorage.setItem("tokenForBasitTodo", JSON.stringify(userToken));
+            typeof window !== undefined && localStorage.setItem("tokenForBasitTodo", JSON.stringify(userToken));
             console.log(data.valueBasit);
             setLoading(true);
             setTimeout(() => {
@@ -37,9 +41,7 @@ const Top = () => {
         if (tokenFromStorage) {
             setCondition("filled")
         }
-    }, [])
-
-
+    }, []);
 
     return (
         <>
@@ -50,9 +52,7 @@ const Top = () => {
                         <button onClick={onOpen} className='font-semibold text-lg hover:text-blue-600 hover:scale-95 duration-200'>
                             Genrate Token
                         </button>
-                        <button className='font-semibold text-lg hover:text-blue-600 hover:scale-95 duration-200'>
-                            / &nbsp; Login
-                        </button>
+                        <Login />
                     </Box>
                 ) : (
                     <Box bg={"gray.300"} rounded={"full"} px={"6px"} py={"2px"}>
