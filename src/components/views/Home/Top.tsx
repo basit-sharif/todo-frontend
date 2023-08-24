@@ -1,3 +1,4 @@
+"use client"
 import { Box, Button, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Text, useDisclosure } from '@chakra-ui/react';
 import { Menu } from 'lucide-react';
 import { useForm, useWatch } from 'react-hook-form';
@@ -13,6 +14,8 @@ const Top = () => {
     const [isLoading, setLoading] = useState(false);
     const [condition, setCondition] = useState("empty");
 
+    const isBrowser = () => typeof window !== undefined;
+
     let errorMessage: undefined | string = undefined;
     if (watchedValue !== "basitsharif") {
         errorMessage = 'Value must be same';
@@ -20,20 +23,23 @@ const Top = () => {
         errorMessage = undefined;
     };
 
-    let tokenFromStorage = typeof window !== undefined ?
-        localStorage.getItem("tokenForBasitTodo") as string
-        : undefined;
+    let tokenFromStorage: any;
+    if (isBrowser()) {
+        tokenFromStorage = localStorage.getItem("tokenForBasitTodo") as string
+    }
+
     let onSubmitHandler = (data: any) => {
         if (!errorMessage) {
             let userToken = uuidv4();
-            typeof window !== undefined && localStorage.setItem("tokenForBasitTodo", JSON.stringify(userToken));
-            console.log(data.valueBasit);
-            setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-                onClose();
-                window.location.reload();
-            }, 1000);
+            if (isBrowser()) {
+                localStorage.setItem("tokenForBasitTodo", JSON.stringify(userToken));
+                setLoading(true);
+                setTimeout(() => {
+                    setLoading(false);
+                    onClose();
+                    window.location.reload();
+                }, 1000);
+            }
         };
     };
 

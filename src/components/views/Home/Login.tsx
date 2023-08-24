@@ -1,3 +1,5 @@
+import { getTodosData } from '@/components/utils/apicalling';
+import { todosType } from '@/components/utils/types';
 import { Box, Button, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Text, useDisclosure } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -6,8 +8,15 @@ const Login = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    function onSubmitHandler(data: any) {
-        console.log(data)
+    const isBrowser = () => typeof window !== undefined;
+
+    async function onSubmitHandler(data: any) {
+        let dataOfTodos: any = await getTodosData();
+        dataOfTodos.foreach((item: todosType) => {
+            if (item.PARTITION_KEY === data.valueToken && isBrowser()) {
+                localStorage.setItem("tokenForBasitTodo", JSON.stringify(data.valueToken));
+            }
+        })
         onClose();
     }
 
@@ -23,9 +32,9 @@ const Login = () => {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         This token will be used to fetch your todos data from database
-                        <Input {...register('valueBasit', { required: true })} mt={"10px"} type='text' />
+                        <Input {...register('valueToken', { required: true })} mt={"10px"} type='text' />
                         {
-                            errors.valueBasit &&
+                            errors.valueToken &&
                             <motion.p
                                 initial={{ opacity: 0, y: -12 }}
                                 animate={{ opacity: 1, y: 0 }}
