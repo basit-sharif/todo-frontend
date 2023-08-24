@@ -55,7 +55,10 @@ const Top = () => {
                         </button>
                     </Box>
                 ) : (
-                    <Box bg={"gray.300"} rounded={"full"} px={"6px"} py={"2px"}>{tokenFromStorage}</Box>
+                    <Box bg={"gray.300"} rounded={"full"} px={"6px"} py={"2px"}>
+                        {/* {tokenFromStorage} */}
+                        sdf
+                    </Box>
                 )}
             </Flex>
             <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
@@ -85,7 +88,7 @@ const Top = () => {
 
                     <ModalFooter>
                         <Button onClick={handleSubmit(onSubmitHandler)} mr={3}>
-                            {isLoading ? <Spinner size={"sm"} /> : "Create"}
+                            {isLoading ? <Spinner size={"sm"} /> : <Text>Create</Text>}
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>
