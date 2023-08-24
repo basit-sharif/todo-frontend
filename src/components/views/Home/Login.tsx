@@ -29,9 +29,12 @@ const Login = () => {
             }
         });
         setLoading(false);
-        console.log(truethyArr)
+
         !truethyArr.includes(true) && notify("Invalid Token or Expired token");
+
         onClose();
+        truethyArr.includes(true) && window.location.reload();
+
     }
 
     return (
