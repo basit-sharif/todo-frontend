@@ -64,7 +64,7 @@ const Body = () => {
       ) : isError ? (
         <Box>Error Occured On Server</Box>
       ) : (
-        <Box>
+        <Box w={"full"}>
           {todosData.map((item: todosType, index: number) => (
             <Flex py={"10px"} alignItems={"center"} justifyContent={"space-between"} key={index} w={"full"}>
               <label className="flex gap-4">
