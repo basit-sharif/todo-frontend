@@ -56,8 +56,7 @@ const Top = () => {
                     </Box>
                 ) : (
                     <Box bg={"gray.300"} rounded={"full"} px={"6px"} py={"2px"}>
-                        {/* {tokenFromStorage} */}
-                        sdf
+                        {tokenFromStorage}
                     </Box>
                 )}
             </Flex>
@@ -70,7 +69,7 @@ const Top = () => {
                         It will genrate a Access token for you to login next time or to keep record of you todos.
                         <br />
                         <br />
-                        Are you sure you want to Genrate? Type "basitsharif" to genrate acces token
+                        Are you sure you want to Genrate? Type <q>basitsharif</q> to genrate acces token
                         <br />
                         <Input {...register('valueBasit', { required: true })} mt={"10px"} type='text' />
                         {
@@ -88,7 +87,7 @@ const Top = () => {
 
                     <ModalFooter>
                         <Button onClick={handleSubmit(onSubmitHandler)} mr={3}>
-                            {isLoading ? <Spinner size={"sm"} /> : <Text>Create</Text>}
+                            {isLoading ? <Spinner size={"sm"} /> : "Create"}
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>
