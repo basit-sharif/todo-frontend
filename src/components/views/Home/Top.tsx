@@ -14,7 +14,7 @@ const Top = () => {
     const [isLoading, setLoading] = useState(false);
     const [condition, setCondition] = useState("empty");
 
-    const isBrowser = () => typeof window !== undefined;
+    const isBrowser = () => typeof window !== "undefined";
 
     let errorMessage: undefined | string = undefined;
     if (watchedValue !== "basitsharif") {
@@ -24,7 +24,7 @@ const Top = () => {
     };
 
     let tokenFromStorage: any;
-    if (isBrowser() && window.localStorage) {
+    if (isBrowser()) {
         tokenFromStorage = window.localStorage.getItem("tokenForBasitTodo") as string
     }
 

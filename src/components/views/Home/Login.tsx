@@ -13,7 +13,7 @@ const Login = () => {
     const [isLoading, setLoading] = useState<boolean>(false);
     const notify = (message: string) => toast(message);
 
-    const isBrowser = () => typeof window !== undefined;
+    const isBrowser = () => typeof window !== "undefined";
 
     async function onSubmitHandler(data: any) {
         setLoading(true);
