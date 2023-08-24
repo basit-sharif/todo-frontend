@@ -24,8 +24,8 @@ const Top = () => {
     };
 
     let tokenFromStorage: any;
-    if (isBrowser()) {
-        tokenFromStorage = localStorage.getItem("tokenForBasitTodo") as string
+    if (isBrowser() && window.localStorage) {
+        tokenFromStorage = window.localStorage.getItem("tokenForBasitTodo") as string
     }
 
     let onSubmitHandler = (data: any) => {

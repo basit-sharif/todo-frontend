@@ -2,21 +2,35 @@ import { getTodosData } from '@/components/utils/apicalling';
 import { todosType } from '@/components/utils/types';
 import { Box, Button, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Text, useDisclosure } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const notify = (message: string) => toast(message);
 
     const isBrowser = () => typeof window !== undefined;
 
     async function onSubmitHandler(data: any) {
+        setLoading(true);
         let dataOfTodos: any = await getTodosData();
-        dataOfTodos.foreach((item: todosType) => {
+        let truethyArr: boolean[] = [];
+
+        dataOfTodos.forEach((item: todosType) => {
             if (item.PARTITION_KEY === data.valueToken && isBrowser()) {
+                truethyArr.push(true);
                 localStorage.setItem("tokenForBasitTodo", JSON.stringify(data.valueToken));
+            } else {
+                truethyArr.push(false);
             }
-        })
+        });
+        setLoading(false);
+        console.log(truethyArr)
+        !truethyArr.includes(true) && notify("Invalid Token or Expired token");
         onClose();
     }
 
@@ -48,12 +62,13 @@ const Login = () => {
 
                     <ModalFooter>
                         <Button onClick={handleSubmit(onSubmitHandler)} mr={3}>
-                            Login
+                            {isLoading ? <Spinner size={"sm"} /> : "Login"}
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+            <ToastContainer />
         </>
     );
 };
