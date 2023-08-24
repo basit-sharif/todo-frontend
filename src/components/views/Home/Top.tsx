@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
 import Login from './Login';
+import MenuComp from '../Menu';
 
 const Top = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -52,7 +53,8 @@ const Top = () => {
     return (
         <>
             <Flex justifyContent={"space-between"} color={"white"} alignItems={"center"} px={"10px"} py={"10px"} bg={"#B17DE9"} >
-                <Menu color="white" size={33} />
+                {/* <Menu color="white" size={33} /> */}
+                {condition !== "empty" && <MenuComp />}
                 {condition === "empty" ? (
                     <Box className='space-x-3'>
                         <button onClick={onOpen} className='font-semibold text-lg hover:text-blue-600 hover:scale-95 duration-200'>
