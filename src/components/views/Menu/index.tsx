@@ -1,3 +1,4 @@
+import { isBrowser } from "@/components/utils/functions";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -9,11 +10,11 @@ import {
 import { Menu } from 'lucide-react';
 
 const MenuComp = () => {
-    const isBrowser = () => typeof window !== "undefined";
 
     function handleSignOut() {
         if (isBrowser()) {
             localStorage.removeItem("tokenForBasitTodo")
+            window.location.reload();
         }
     }
 

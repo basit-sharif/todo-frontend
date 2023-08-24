@@ -1,4 +1,5 @@
 import { getTodosData } from '@/components/utils/apicalling';
+import { isBrowser } from '@/components/utils/functions';
 import { todosType } from '@/components/utils/types';
 import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, useDisclosure } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -12,8 +13,6 @@ const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [isLoading, setLoading] = useState<boolean>(false);
     const notify = (message: string) => toast(message);
-
-    const isBrowser = () => typeof window !== "undefined";
 
     async function onSubmitHandler(data: any) {
         setLoading(true);

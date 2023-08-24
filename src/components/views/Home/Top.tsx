@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
 import Login from './Login';
 import MenuComp from '../Menu';
+import { isBrowser } from '@/components/utils/functions';
 
 const Top = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -14,8 +15,6 @@ const Top = () => {
     const watchedValue = useWatch({ control, name: 'valueBasit' });
     const [isLoading, setLoading] = useState(false);
     const [condition, setCondition] = useState("empty");
-
-    const isBrowser = () => typeof window !== "undefined";
 
     let errorMessage: undefined | string = undefined;
     if (watchedValue !== "basitsharif") {
@@ -52,7 +51,7 @@ const Top = () => {
 
     return (
         <>
-            <Flex justifyContent={"space-between"} color={"white"} alignItems={"center"} px={"10px"} py={"10px"} bg={"#B17DE9"} >
+            <Flex justifyContent={"space-between"} color={"white"} alignItems={"center"} px={"10px"} py={"15px"} bg={"#B17DE9"} >
                 {/* <Menu color="white" size={33} /> */}
                 {condition !== "empty" && <MenuComp />}
                 {condition === "empty" ? (
