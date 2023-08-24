@@ -10,9 +10,9 @@ const Body = () => {
   const [allState, setAllState] = useState<allStateBodyType>({
     isLoading: false,
     isError: false,
-    updateLoading:false,
+    updateLoading: false,
   });
-  const { isLoading, isError,updateLoading } = allState;
+  const { isLoading, isError, updateLoading } = allState;
 
   async function fetchAPi() {
     setAllState({
@@ -64,17 +64,19 @@ const Body = () => {
       ) : isError ? (
         <Box>Error Occured On Server</Box>
       ) : (
-        todosData.map((item: todosType, index: number) => (
-          <Flex alignItems={"center"} justifyContent={"space-between"} key={index} w={"full"}>
-            <label className="flex gap-4">
-              {updateLoading ? <Spinner size={"xs"} /> : <input onChange={handleUpdate} checked={item.CHECKED} type="checkbox" />}
-              <Text fontWeight={"semibold"} fontSize={"18px"} color={"#A0A7C4"}>
-                {item.TODO_NAME}
-              </Text>
-            </label>
-            <Trash2 size={20} color="#9FA4C4" />
-          </Flex>
-        ))
+        <Box>
+          {todosData.map((item: todosType, index: number) => (
+            <Flex py={"10px"} alignItems={"center"} justifyContent={"space-between"} key={index} w={"full"}>
+              <label className="flex gap-4">
+                {updateLoading ? <Spinner size={"xs"} /> : <input onChange={handleUpdate} checked={item.CHECKED} type="checkbox" />}
+                <Text fontWeight={"semibold"} fontSize={"18px"} color={"#A0A7C4"}>
+                  {item.TODO_NAME}
+                </Text>
+              </label>
+              <Trash2 size={20} color="#9FA4C4" />
+            </Flex>
+          ))}
+        </Box>
       )}
     </Flex>
   )
