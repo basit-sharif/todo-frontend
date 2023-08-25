@@ -97,7 +97,7 @@ const Body = () => {
             <Button
               isLoading={newTodoLoading}
               // spinner={<BeatLoader size={8} color='white' />}
-              loadingText='Submitting'
+              loadingText='Adding'
               onClick={handleAddTodo}
               colorScheme='blue'
               variant='outline'
