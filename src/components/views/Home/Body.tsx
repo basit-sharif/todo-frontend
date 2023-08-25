@@ -74,7 +74,7 @@ const Body = () => {
         ) : (
           <Box w={"full"}>
             {todosData.map((item: todosType, index: number) => (
-              <SingleTodo item={item} index={index} fetchAPi={fetchAPi} />
+              <SingleTodo key={index} item={item} index={index} fetchAPi={fetchAPi} />
             ))}
             <button
               onClick={() => {
