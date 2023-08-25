@@ -18,9 +18,9 @@ const Login = () => {
         setLoading(true);
         let dataOfTodos: any = await getTodosData();
         let truethyArr: boolean[] = [];
-
         dataOfTodos.forEach((item: todosType) => {
-            if (item.PARTITION_KEY === data.valueToken && isBrowser()) {
+            console.log(item,data.valueToken)
+            if (item.userId === data.valueToken && isBrowser()) {
                 truethyArr.push(true);
                 localStorage.setItem("tokenForBasitTodo", JSON.stringify(data.valueToken));
             } else {

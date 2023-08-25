@@ -1,84 +1,114 @@
-import { getTodosData, updateTodoData } from "@/components/utils/apicalling";
-import { allStateBodyType, todosType } from "@/components/utils/types";
-import { Box, Checkbox, Flex, Spinner, Text } from "@chakra-ui/react"
-import { useEffect, useState } from "react";
-import { Trash2 } from 'lucide-react';
+import { getTodosData, makeNewTodo } from "@/components/utils/apicalling";
 import { isBrowser } from "@/components/utils/functions";
+import { allStateBodyType, todosType } from "@/components/utils/types";
+import { Box, Button, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Text, useDisclosure } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import SingleTodo from "./SingleTodo";
 
 const Body = () => {
   const [todosData, settodosData] = useState<Array<todosType>>([]);
+  const [newTodoVal, setNewTodoVal] = useState("");
   const [allState, setAllState] = useState<allStateBodyType>({
     isLoading: false,
     isError: false,
-    updateLoading: false,
+    newTodoLoading: false,
   });
-  const { isLoading, isError, updateLoading } = allState;
+  const { isLoading, isError, newTodoLoading } = allState;
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const OverlayOne = () => (
+    <ModalOverlay
+      bg='blackAlpha.300'
+      backdropFilter='blur(10px) hue-rotate(90deg)'
+    />
+  )
 
   async function fetchAPi() {
-    setAllState({
-      ...allState,
-      isLoading: true,
-    });
-    let dataOfTodos: any = await getTodosData();
-    if (dataOfTodos == "Error") {
+    if (isBrowser()) {
       setAllState({
         ...allState,
-        isError: true,
+        isLoading: true,
+      });
+      let dataOfTodos: any = await getTodosData(JSON.parse(localStorage.getItem("tokenForBasitTodo") as string));
+      if (dataOfTodos == "Error") {
+        setAllState({
+          ...allState,
+          isError: true,
+        });
+      };
+      settodosData(dataOfTodos);
+      setAllState({
+        ...allState,
+        isLoading: false,
       });
     };
-    settodosData(dataOfTodos);
+  };
+
+  async function handleAddTodo() {
     setAllState({
       ...allState,
-      isLoading: false,
+      newTodoLoading: true,
     });
+    await makeNewTodo(newTodoVal, JSON.parse(localStorage.getItem("tokenForBasitTodo") as string));
+    await fetchAPi();
+    setAllState({
+      ...allState,
+      newTodoLoading: false,
+    });
+    onClose();
   }
+
   useEffect(() => {
     fetchAPi();
   }, []);
 
-  async function handleUpdate(e: any) {
-    setAllState({
-      ...allState,
-      updateLoading: true,
-    });
-    if (isBrowser()) {
-      let userIdTokenPartitionKye = localStorage.getItem("tokenForBasitTodo") as string;
-      if (userIdTokenPartitionKye) {
-        userIdTokenPartitionKye = JSON.parse(userIdTokenPartitionKye)
-        await updateTodoData(e.target.checked, userIdTokenPartitionKye);
-      };
-    }
-    setAllState({
-      ...allState,
-      updateLoading: false,
-    });
-  }
-
-
   return (
-    <Flex justifyContent={"center"} alignItems={"center"} p={"3rem"} w={"full"} bg={"white"}>
-      {isLoading ? (
-        <Box>
-          <Spinner size={"lg"} />
-        </Box>
-      ) : isError ? (
-        <Box>Error Occured On Server</Box>
-      ) : (
-        <Box w={"full"}>
-          {todosData.map((item: todosType, index: number) => (
-            <Flex py={"10px"} alignItems={"center"} justifyContent={"space-between"} key={index} w={"full"}>
-              <label className="flex gap-4">
-                {updateLoading ? <Spinner size={"xs"} /> : <input onChange={handleUpdate} checked={item.CHECKED} type="checkbox" />}
-                <Text fontWeight={"semibold"} fontSize={"18px"} color={"#A0A7C4"}>
-                  {item.TODO_NAME}
-                </Text>
-              </label>
-              <Trash2 size={20} color="#9FA4C4" />
-            </Flex>
-          ))}
-        </Box>
-      )}
-    </Flex>
+    <>
+      <Flex pos={"relative"} justifyContent={"center"} alignItems={"center"} p={"3rem"} w={"full"} bg={"white"} shadow={"lg"}>
+        {isLoading ? (
+          <Box>
+            <Spinner size={"lg"} />
+          </Box>
+        ) : isError ? (
+          <Box>Error Occured On Server</Box>
+        ) : (
+          <Box w={"full"}>
+            {todosData.map((item: todosType, index: number) => (
+              <SingleTodo item={item} index={index} fetchAPi={fetchAPi} />
+            ))}
+            <button
+              onClick={() => {
+                onOpen()
+              }}
+              className="absolute left-[28%] md:left-[30%] lg:left-[35%] -bottom-6 py-3 px-8 rounded-[21px] bg-[#B07FEC] text-white">+ New task</button>
+          </Box>
+        )}
+      </Flex>
+      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+        <OverlayOne />
+        <ModalContent>
+          <ModalHeader>Add New Task</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>We are here to manage your tasks! Put your task name here...</Text>
+            <Input value={newTodoVal} onChange={(e) => setNewTodoVal(e.target.value)} mt={"6px"} type="text" />
+          </ModalBody>
+          <ModalFooter gap={"10px"}>
+            <Button
+              isLoading={newTodoLoading}
+              // spinner={<BeatLoader size={8} color='white' />}
+              loadingText='Submitting'
+              onClick={handleAddTodo}
+              colorScheme='blue'
+              variant='outline'
+            >
+              Add
+            </Button>
+            <Button onClick={onClose}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   )
 }
 

@@ -21,7 +21,7 @@ const MenuComp = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Menu color="white" size={33} />
+                <Menu className="cursor-pointer" color="white" size={33} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 bg-white">
                 <DropdownMenuLabel>Menu</DropdownMenuLabel>

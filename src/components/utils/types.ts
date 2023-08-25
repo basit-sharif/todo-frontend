@@ -1,11 +1,12 @@
 export interface todosType {
-    PARTITION_KEY: string,
-    TODO_NAME: string,
-    CHECKED: boolean,
+    todoId: string,
+    todoName: string,
+    checked: boolean,
+    userId: string,
 };
 
 export interface allStateBodyType {
-    isLoading:boolean,
-    isError:boolean,
-    updateLoading:boolean,
+    isLoading: boolean,
+    isError: boolean,
+    newTodoLoading:boolean,
 }
