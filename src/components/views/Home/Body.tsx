@@ -72,7 +72,7 @@ const Body = () => {
         ) : isError ? (
           <Box>Error Occured On Server</Box>
         ) : (
-          <Box w={"full"}>
+          <Box w={"full"} px={"10px"} overflow={"auto"} maxH={"14rem"} className="scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-gray-200">
             {todosData.map((item: todosType, index: number) => (
               <SingleTodo key={index} item={item} index={index} fetchAPi={fetchAPi} />
             ))}
@@ -80,7 +80,7 @@ const Body = () => {
               onClick={() => {
                 onOpen()
               }}
-              className="absolute left-[28%] md:left-[30%] lg:left-[35%] -bottom-6 py-3 px-8 rounded-[21px] bg-[#B07FEC] text-white">+ New task</button>
+              className="absolute left-[28%] md:left-[30%] lg:left-[34%] -bottom-6 py-3 px-8 rounded-[21px] bg-[#B07FEC] text-white">+ New task</button>
           </Box>
         )}
       </Flex>
